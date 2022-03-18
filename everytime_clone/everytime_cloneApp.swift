@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
-
+import UIKit
 @main
 struct everytime_cloneApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabView()
+            
         }
     }
 }
