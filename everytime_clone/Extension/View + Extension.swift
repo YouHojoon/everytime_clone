@@ -15,4 +15,9 @@ extension View{
             self
         }
     }
+    
+    
+    func eraseToAnyView () -> AnyView {
+        return AnyView(self)
+    }
 }

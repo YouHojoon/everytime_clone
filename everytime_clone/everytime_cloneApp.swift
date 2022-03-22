@@ -9,10 +9,13 @@ import SwiftUI
 import UIKit
 @main
 struct everytime_cloneApp: App {
+    
+    init(){
+        UIScrollView.appearance().bounces = false//맨 끝의 bounce 막기
+    }
     var body: some Scene {
         WindowGroup {
-            TabView()
-            
+            HomeView()
         }
     }
 }

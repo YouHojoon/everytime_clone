@@ -8,8 +8,11 @@
 import Foundation
 import SwiftUI
 
-struct TabView: View{
+struct MainTabView: View{
     @State private var tabIndex: TabIndex = .home
+    @State private var startOffset = 0.0
+    @State private var offset = 0.0
+    
     
     private enum TabIndex{
         case home
@@ -19,10 +22,6 @@ struct TabView: View{
         case campusPick
     }
     
-    init(){
-        UIScrollView.appearance().bounces = false//맨 끝의 bounce 막기
-    }
-    
     var body: some View{
         GeometryReader{reader in
             VStack(spacing: 0){
@@ -30,7 +29,7 @@ struct TabView: View{
                     Divider().opacity(0)
                     Text("에브리타임").foregroundColor(.everytimeColor).font(.system(size:15,weight: .medium))
                     HStack{
-                        Text("상명대 서울캠").font(.system(size: 25,weight: .bold))
+                        Text("상명대 서울캠").font(.  system(size: 25,weight: .bold))
                         Spacer()
                         Button{
                             
@@ -43,12 +42,24 @@ struct TabView: View{
                             Image(systemName: "person").font(.system(size: 25)).foregroundColor(.black)
                         }
                     }
-                }.padding([.leading, .trailing], 20)
+                }.padding([.leading, .trailing, .bottom], 20).background(Color.white.shadow(color: .black.opacity(offset == 0 ? 0 : 0.1), radius: 2, x: 0, y: 2))
                 
                 ScrollView(.vertical,showsIndicators: false){
                     ForEach(1..<100){
                         Text("테스트\($0)").frame(width: reader.size.width)
-                    }
+                    }.overlay(
+                        GeometryReader{reader -> Color in
+                            DispatchQueue.main.async {
+                                if startOffset == 0.0{
+                                    startOffset = reader.frame(in:.global).minY
+                                    print(startOffset)
+                                }
+                                offset = startOffset - reader.frame(in: .global).minY
+                            }
+                            return Color.clear
+                        }.frame(width: 0, height: 0)
+                        , alignment: .top
+                    )
                 }
                 
                 
@@ -57,32 +68,32 @@ struct TabView: View{
                         tabIndex = .home
                     }label: {
                         Image(systemName: "house").foregroundColor(getTabBarItemColor(tabIndex: .home)).font(.system(size: 25)).frame(width: reader.size.width / 5, height: 50)
-                    }.buttonStyle(TabBarItemStyle())
+                    }.buttonStyle(MainTabBarItemStyle())
                     
                     Button{
                         tabIndex = .schedule
                     }label: {
                         Image(systemName: "calendar").foregroundColor(getTabBarItemColor(tabIndex: .schedule)).font(.system(size: 25)).frame(width: reader.size.width / 5, height: 50)
-                    }.buttonStyle(TabBarItemStyle())
+                    }.buttonStyle(MainTabBarItemStyle())
                     
                     Button{
                         tabIndex = .board
                     }label: {
                         Image(systemName: "list.bullet.rectangle").foregroundColor(getTabBarItemColor(tabIndex: .board)).font(.system(size: 25)).frame(width: reader.size.width / 5, height: 50)
-                    }.buttonStyle(TabBarItemStyle())
+                    }.buttonStyle(MainTabBarItemStyle())
                     
                     Button{
                         tabIndex = .notice
                     }label: {
                         Image(systemName: "bell").foregroundColor(getTabBarItemColor(tabIndex: .notice)).font(.system(size: 25)).frame(width: reader.size.width / 5, height: 50)
-                    }.buttonStyle(TabBarItemStyle())
+                    }.buttonStyle(MainTabBarItemStyle())
                     
                     Button{
                         tabIndex = .campusPick
                     }label: {
                         Image(systemName: "graduationcap").foregroundColor(getTabBarItemColor(tabIndex: .campusPick)).font(.system(size: 25)).frame(width: reader.size.width / 5, height: 50)
-                    }.buttonStyle(TabBarItemStyle())
-                }.background(Color.white.shadow(color: .black.opacity(0.1), radius: 1, x: 0, y: -2))
+                    }.buttonStyle(MainTabBarItemStyle())
+                }.background(Color.white.shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: -2))
             }
         }.edgesIgnoringSafeArea([.leading, .trailing])
     }
@@ -110,12 +121,12 @@ struct TabView: View{
     
 }
 
-struct TabView_Previews: PreviewProvider {
+struct MainTabView_Previews: PreviewProvider {
     static var previews: some View {
-        TabView()
+        MainTabView()
     }
 }
-fileprivate struct TabBarItemStyle: ButtonStyle{
+fileprivate struct MainTabBarItemStyle: ButtonStyle{
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
     }
