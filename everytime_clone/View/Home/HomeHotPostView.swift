@@ -9,10 +9,11 @@ import SwiftUI
 
 struct HomeTopPostView: View {
     var body: some View {
-        VStack(alignment:.leading){
-            Text("실시간 인기 글").font(.system(size: 18, weight: .bold)).padding(.bottom, 5)
-            PostPreviewView(post: .getDummy()).padding(.bottom, 5)
-            PostPreviewView(post: .getDummy())
+        VStack(alignment:.leading, spacing: 15){
+            Text("HOT 게시물").font(.system(size: 18, weight: .bold))
+            ForEach(0..<4){_ in
+                PostPreviewView(.getDummy(),type: .hotPost)
+            }
         }.padding().overlay(RoundedRectangle(cornerRadius: 13).stroke(.gray.opacity(0.3),lineWidth: 2))
     }
 }

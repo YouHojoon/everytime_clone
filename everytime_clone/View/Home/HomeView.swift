@@ -13,13 +13,14 @@ struct HomeView: View{
             VStack{
                 HomeTopCardListView().padding([.leading,.trailing])
                 HomeIconListView().padding([.leading,.trailing]).padding(.top, 10)
-                Color.blue.frame(height: 80).padding([.leading,.trailing]).cornerRadius(5)
+                Color.blue.frame(height: 80).cornerRadius(5).padding([.leading,.trailing])
                 HomeBoardListView().padding([.leading,.trailing])
-                HomeTopPostView().padding([.leading,.trailing])
+                HomeRealTimeTopPostView().padding([.leading,.trailing])
                 HomeAdView().frame(height: 470)
+                HomeRecentLectureReviewView().padding([.leading,.trailing])
+                HomeTopPostView().padding([.leading,.trailing])
             }
         }
-        
     }
 }
 
