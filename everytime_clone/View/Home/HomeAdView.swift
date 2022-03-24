@@ -8,25 +8,37 @@
 import SwiftUI
 import Foundation
 struct HomeAdView: View {
+    private let type: `Type`
     private let advertisementList = [
         HomeAdCardView(Advertisement.getDummy()),
         HomeAdCardView(Advertisement.getDummy()),
         HomeAdCardView(Advertisement.getDummy())
     ]
-    
+    enum `Type`{
+        case recommendedInformation
+        case event
+        
+        fileprivate var title:String{
+            switch self{
+            case .recommendedInformation:
+                return "추천 정보"
+            case .event:
+                return "이벤트"
+            }
+        }
+    }
     @State private var startOffset = 0.0
     @State private var offset = 0.0
     @State private var currentIndex = 0
     @State private var screenDrag = 0.0
-    @GestureState var isDetectingLongPress = false
     
-    init(){
-        UIScrollView.appearance().isPagingEnabled = true
+    init(_ type:`Type`){
+        self.type = type
     }
     var body: some View {
         GeometryReader{reader in
             VStack(alignment:.leading){
-                Text("추천 정보").font(.system(size:18, weight: .bold)).padding([.leading], 30).padding([.top], 20)
+                Text(type.title).font(.system(size:18, weight: .bold)).padding([.leading], 30).padding([.top], 20)
                 Carousel(contentList:advertisementList, spacing: 8)
             }
         }.overlay(RoundedRectangle(cornerRadius: 13).stroke(.gray.opacity(0.3),lineWidth: 2).padding([.leading,.trailing]))
@@ -35,6 +47,6 @@ struct HomeAdView: View {
 
 struct HomeAdView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeAdView()
+        HomeAdView(.recommendedInformation)
     }
 }

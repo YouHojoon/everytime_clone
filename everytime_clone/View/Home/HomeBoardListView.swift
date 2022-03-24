@@ -19,7 +19,7 @@ struct HomeBoardListView: View {
                 HStack{
                     Text("자유게시판").font(.system(size: 15, weight: .medium))
                     Text("어쩌구저쩌구 내용내용내용내용내용내용내용내용내용내용").lineLimit(1).foregroundColor(.gray).font(.system(size: 13))
-                    Text("N").foregroundColor(.white).font(.system(size: 10,weight: .bold)).frame(width: 13, height: 13).background(Color.everytimeColor).cornerRadius(3)
+                    Text("N").foregroundColor(.white).font(.system(size: 8,weight: .bold)).frame(width: 10, height: 10).background(Color.everytimeColor).cornerRadius(3)
                 }
             }
         }.padding().overlay(RoundedRectangle(cornerRadius: 13).stroke(.gray.opacity(0.3),lineWidth: 2))

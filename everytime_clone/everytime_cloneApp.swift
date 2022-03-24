@@ -15,7 +15,7 @@ struct everytime_cloneApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            MainTabView().environmentObject(TabViewModel())
         }
     }
 }

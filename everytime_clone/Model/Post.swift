@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 struct Post{
     let user: User
     let createdDate: Date
@@ -15,8 +16,8 @@ struct Post{
     let comments: Int
     let board: Board
     let isAnonymous: Bool
-    
+    let image : Image?
     static func getDummy() -> Post{
-        return Post(user:.getDummy(), createdDate: Date(), title: "제목", content: "내용", likes: 153, comments: 17, board: .free, isAnonymous: true)
+        return Post(user:.getDummy(), createdDate: Date(), title: "제목", content: "내용", likes: 153, comments: 17, board: .free, isAnonymous: true, image: Image("bol4"))
     }
 }

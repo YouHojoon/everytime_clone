@@ -7,13 +7,13 @@
 
 import Foundation
 import SwiftUI
-
+import Combine
 struct MainTabView: View{
     @State private var tabIndex: TabIndex = .home
-    @State private var startOffset = 0.0
-    @State private var offset = 0.0
+    @State private var shouldShowHeaderShadow = false
+    @EnvironmentObject var viewModel: TabViewModel
     
-    
+    private let test = HomeView()
     private enum TabIndex{
         case home
         case schedule
@@ -32,36 +32,21 @@ struct MainTabView: View{
                         Text("상명대 서울캠").font(.  system(size: 25,weight: .bold))
                         Spacer()
                         Button{
-                            
+
                         }label: {
                             Image(systemName: "magnifyingglass").font(.system(size: 25)).foregroundColor(.black)
                         }.padding(.trailing, 10)
                         Button{
-                            
+
                         }label: {
                             Image(systemName: "person").font(.system(size: 25)).foregroundColor(.black)
                         }
                     }
-                }.padding([.leading, .trailing, .bottom], 20).background(Color.white.shadow(color: .black.opacity(offset == 0 ? 0 : 0.1), radius: 2, x: 0, y: 2))
+                }.padding([.leading, .trailing, .bottom], 20).background(Color.white.shadow(color: .black.opacity(shouldShowHeaderShadow ? 0.1 : 0), radius: 2, x: 0, y: 2).onReceive(viewModel.isScrolled){
+                    shouldShowHeaderShadow = $0
+                })
                 
-                ScrollView(.vertical,showsIndicators: false){
-                    ForEach(1..<100){
-                        Text("테스트\($0)").frame(width: reader.size.width)
-                    }.overlay(
-                        GeometryReader{reader -> Color in
-                            DispatchQueue.main.async {
-                                if startOffset == 0.0{
-                                    startOffset = reader.frame(in:.global).minY
-                                    print(startOffset)
-                                }
-                                offset = startOffset - reader.frame(in: .global).minY
-                            }
-                            return Color.clear
-                        }.frame(width: 0, height: 0)
-                        , alignment: .top
-                    )
-                }
-                
+                contentView
                 
                 HStack(spacing:0){
                     Button{
@@ -98,24 +83,27 @@ struct MainTabView: View{
         }.edgesIgnoringSafeArea([.leading, .trailing])
     }
     
-    
     private func getTabBarItemColor(tabIndex: TabIndex) -> Color{
         return tabIndex == self.tabIndex ? .black : .gray
     }
     
-    private var contentView: some View{
+    @ViewBuilder
+    private var contentView : some View{
         switch tabIndex {
         case .home:
-            return Text("홈")
+            HomeView().onAppear{
+                viewModel.isScrolled.send(false)
+            }
         case .schedule:
-            return Text("장바구니")
+            Text("???").onAppear{
+                viewModel.isScrolled.send(false)
+            }
         case .board:
-            return Text("프로필")
+            HomeView()
         case .notice:
-            return Text("프로필")
+            HomeView()
         case .campusPick:
-            return Text("프로필")
-            
+            HomeView()
         }
     }
     
@@ -123,7 +111,7 @@ struct MainTabView: View{
 
 struct MainTabView_Previews: PreviewProvider {
     static var previews: some View {
-        MainTabView()
+        MainTabView().environmentObject(TabViewModel())
     }
 }
 fileprivate struct MainTabBarItemStyle: ButtonStyle{
