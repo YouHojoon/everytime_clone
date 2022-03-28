@@ -10,4 +10,5 @@ import Combine
 
 class TabViewModel: ObservableObject{
     let isScrolled = PassthroughSubject<Bool,Never>()
+    var currentSchedule: Schedule?
 }

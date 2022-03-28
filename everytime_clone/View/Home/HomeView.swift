@@ -10,6 +10,7 @@ import SwiftUI
 import Combine
 struct HomeView: View{
     @State private var startScrollOffset = 0.0
+    @State private var scrollOffsetSkip = true
     @EnvironmentObject var tabViewModel: TabViewModel
     
     var body: some View{
@@ -28,16 +29,21 @@ struct HomeView: View{
                 GeometryReader{reader -> Color in
                     DispatchQueue.main.async {
                         if startScrollOffset == 0.0{
-                            startScrollOffset = reader.frame(in: .global).minY
+                            if scrollOffsetSkip{
+                                scrollOffsetSkip = false
+                            }
+                            else{
+                                startScrollOffset = reader.frame(in: .global).minY
+                            }
                         }
                         let scrollOffset = reader.frame(in: .global).minY - startScrollOffset
-                        if scrollOffset != 0{
+                        if scrollOffset != 0 {
                             tabViewModel.isScrolled.send(true)
                         }
                         else{
                             tabViewModel.isScrolled.send(false)
                         }
-                    }    
+                    }
                     return Color.clear
                 },
                 alignment: .top
@@ -66,6 +72,6 @@ struct HomeView: View{
 
 struct HomeView_Previews: PreviewProvider{
     static var previews: some View{
-        HomeView()
+        HomeView().environmentObject(TabViewModel())
     }
 }
