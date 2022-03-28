@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 struct Carousel<T:View>: View {
-    @State public private(set) var selectedItem = 0
+    @State private var selectedItem = 0
     
     private let spacing: CGFloat
     private let offsetToMove = UIScreen.main.bounds.width / 2 - 100
